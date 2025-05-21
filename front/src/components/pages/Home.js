@@ -1,6 +1,5 @@
+import { Header } from "../templates/Header";
 
-export default function Home() {
-  return (
-    <div>Home</div>
-  )
-}
+export const Home = () => {
+  return <Header />;
+};

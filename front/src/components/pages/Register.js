@@ -3,7 +3,7 @@ import { Box, Container, Typography, TextField, Button, Link, Avatar, CssBaselin
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Link as RouterLink } from "react-router-dom";
 
-export default function Register() {
+export const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -114,4 +114,4 @@ export default function Register() {
       </Box>
     </Container>
   );
-}
+};

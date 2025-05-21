@@ -1,31 +1,47 @@
 import { useState } from "react";
 import { Box, Container, Typography, TextField, Button, FormControlLabel, Checkbox, Link, Avatar, CssBaseline, Grid } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export default function Login() {
+export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    let valid = true;
     setEmailError("");
     setPasswordError("");
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setEmailError("有効なメールアドレスを入力してください。");
-      valid = false;
+
+    let isValid = true;
+    if (!email) {
+      setEmailError("メールアドレスを入力してください。");
+      isValid = false;
     }
-    if (!password || password.length < 6) {
-      setPasswordError("パスワードは6文字以上で入力してください。");
-      valid = false;
+    if (!password) {
+      setPasswordError("パスワードを入力してください。");
+      isValid = false;
     }
-    if (valid) {
-      // 認証処理をここに実装
-      console.log({ email, password, remember });
+    if (!isValid) return;
+
+    const endpoint = "https://jsonplaceholder.typicode.com/users";
+    try {
+      const response = await axios.get(endpoint, {
+        params: { email, id: password },
+      });
+      if (response.data.length > 0) {
+        navigate("/");
+      } else {
+        // navigate("/loginfailed");
+        alert("メールアドレスまたはパスワードが間違っています。");
+      }
+    } catch (error) {
+      console.error("ログインリクエスト失敗:", error);
+      alert("ログインに失敗しました。");
     }
   };
 
@@ -76,7 +92,14 @@ export default function Login() {
             helperText={passwordError}
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" checked={remember} onChange={(e) => setRemember(e.target.checked)} />}
+            control={
+              <Checkbox
+                value="remember"
+                color="primary"
+                checked={remember}
+                onChange={(e) => setRemember(e.target.checked)}
+              />
+            }
             label="ログイン状態を保持する"
           />
           <Button
@@ -98,4 +121,4 @@ export default function Login() {
       </Box>
     </Container>
   );
-}
+};
