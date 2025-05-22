@@ -1,11 +1,13 @@
 import { AppBar, Toolbar, Typography, Button, IconButton, Box } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { BasicMenu } from "../elements/BasicMenu";
 
 export const Header = () => (
   <Box sx={{ flexGrow: 1 }}>
     <AppBar position="static">
       <Toolbar>
-        <IconButton
+        <BasicMenu />
+        {/* <IconButton
           size="large"
           edge="start"
           color="inherit"
@@ -13,7 +15,7 @@ export const Header = () => (
           sx={{ mr: 2 }}
         >
           <MenuIcon />
-        </IconButton>
+        </IconButton> */}
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           News
         </Typography>
