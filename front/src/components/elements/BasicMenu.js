@@ -31,8 +31,9 @@ export const BasicMenu = () => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         color="inherit"
+        edge="start"
       >
-        menu
+        MENU
       </Button>
       <Menu
         id="basic-menu"

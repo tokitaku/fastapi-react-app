@@ -1,26 +1,18 @@
-import { AppBar, Toolbar, Typography, Button, IconButton, Box } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import { AppBar, Toolbar, Typography } from "@mui/material";
 import { BasicMenu } from "../elements/BasicMenu";
+import { useContext } from "react";
+import { LoginUserProviderContext } from "../providers/LoginUserProvider";
 
-export const Header = () => (
-  <Box sx={{ flexGrow: 1 }}>
+export const Header = () => {
+  const { loginUser } = useContext(LoginUserProviderContext);
+  return (
     <AppBar position="static">
       <Toolbar>
         <BasicMenu />
-        {/* <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2 }}
-        >
-          <MenuIcon />
-        </IconButton> */}
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          News
+          ログインユーザー: {loginUser}
         </Typography>
-        <Button color="inherit">Login</Button>
       </Toolbar>
     </AppBar>
-  </Box>
-);
+  );
+};

@@ -1,16 +1,31 @@
-import { useState } from "react";
-import { Box, Container, Typography, TextField, Button, FormControlLabel, Checkbox, Link, Avatar, CssBaseline, Grid } from "@mui/material";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { useState, useContext } from "react";
+import {
+  Box,
+  Container,
+  Typography,
+  TextField,
+  Button,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Avatar,
+  CssBaseline,
+  Grid,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { LoginUserProviderContext } from "../providers/LoginUserProvider";
+import { useUserLogin } from "../hooks/userLogin";
 
 export const Login = () => {
+  const { setLoginUser, setIsLoggedIn } = useContext(LoginUserProviderContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
+  const { login } = useUserLogin();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,21 +43,13 @@ export const Login = () => {
     }
     if (!isValid) return;
 
-    const endpoint = "https://jsonplaceholder.typicode.com/users";
-    try {
-      const response = await axios.get(endpoint, {
-        params: { email, id: password },
-      });
-      if (response.data.length > 0) {
-        navigate("/");
-      } else {
-        // navigate("/loginfailed");
-        alert("メールアドレスまたはパスワードが間違っています。");
-      }
-    } catch (error) {
-      console.error("ログインリクエスト失敗:", error);
-      alert("ログインに失敗しました。");
-    }
+    await login({
+      email,
+      password,
+      setLoginUser,
+      setIsLoggedIn,
+      navigate,
+    });
   };
 
   return (
