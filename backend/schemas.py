@@ -14,7 +14,7 @@ class User(UserBase):
     is_active: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class SalesBase(BaseModel):
@@ -27,7 +27,7 @@ class Sales(SalesBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class SalesCreate(SalesBase):

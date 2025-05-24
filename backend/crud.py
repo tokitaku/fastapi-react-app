@@ -1,7 +1,7 @@
 from sqlmodel import Session, select
 
-from . import models
-from . import schemas
+import models
+import schemas
 
 
 def get_users(session: Session):
