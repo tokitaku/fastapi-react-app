@@ -1,19 +1,34 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
-class HeroBase(BaseModel):
+class UserBase(BaseModel):
     name: str
-    secret_name: str
 
 
-class HeroCreate(HeroBase):
-    age: int | None = None
+class UserCreate(UserBase):
+    password: str
 
 
-class HeroRead(HeroBase):
+class User(UserBase):
     id: int
-    age: int | None = None
+    is_active: bool
 
-    model_config = {
-        "from_attributes": True
-    }
+    class Config:
+        from_attributes = True
+
+
+class SalesBase(BaseModel):
+    year: int
+    department: str
+    sales: float
+
+
+class Sales(SalesBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
+class SalesCreate(SalesBase):
+    pass
