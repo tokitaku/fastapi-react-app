@@ -17,7 +17,10 @@ SessionDep = Annotated[Session, Depends(get_session)]
 
 @router.post("/", response_model=schemas.HeroRead)
 def create_hero(hero: schemas.HeroCreate, session: SessionDep):
-    return crud.create_hero(session=session, hero_in=hero)
+    try:
+        return crud.create_hero(session=session, hero_in=hero)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to create hero")
 
 
 @router.get("/", response_model=List[schemas.HeroRead])
