@@ -1,7 +1,7 @@
 from sqlmodel import SQLModel, Field
 
 
-class Users(SQLModel, table=True):
+class User(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True, index=True)
     name: str = Field(index=True)
     password: str = Field(index=True)
