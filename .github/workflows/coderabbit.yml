@@ -1,0 +1,26 @@
+name: CodeRabbit AI Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - '**'  # すべてのブランチからのPRをチェック
+
+jobs:
+  coderabbit-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: CodeRabbit AI Review
+        uses: coderabbitai/ai-review@v1
+        with:
+          # 必要に応じてカスタマイズできるオプション
+          # github-token: ${{ secrets.GITHUB_TOKEN }}
+          # openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          openai-model: "gpt-4.1"  # または別のモデルを選択
+          # コメントのスタイル設定
+          review-comment-lgtm: false  # 問題がない場合はコメントしない
