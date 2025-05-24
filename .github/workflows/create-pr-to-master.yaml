@@ -1,0 +1,47 @@
+name: Create PR from develop to master
+
+on:
+  # developブランチへのプッシュ時に実行
+  push:
+    branches:
+      - develop
+  # 手動実行も可能にする
+  workflow_dispatch:
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # すべてのブランチと履歴を取得
+
+      - name: Set up GitHub CLI
+        run: |
+          gh auth setup-git
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request if not exists
+        run: |
+          # developブランチがmasterと同じでない場合のみPRを作成
+          if ! git diff --quiet origin/develop origin/master; then
+            # 既存のPRがあるか確認
+            PR_EXISTS=$(gh pr list --base master --head develop --json number | grep -c "number" || echo "0")
+            
+            if [ "$PR_EXISTS" -eq "0" ]; then
+              echo "Creating new PR from develop to master"
+              gh pr create \
+                --base master \
+                --head develop \
+                --title "【自動PR】developからmasterへの更新" \
+                --body "developブランチの変更をmasterブランチにマージするための自動プルリクエストです。"
+            else
+              echo "PR from develop to master already exists"
+            fi
+          else
+            echo "No changes between develop and master branches"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
