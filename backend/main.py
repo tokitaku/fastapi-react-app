@@ -37,29 +37,9 @@ def read_users(session: SessionDep, skip: int = 0, limit: int = 10):
     return users[skip : skip + limit]
 
 
-@app.get("/users/{user_id}", response_model=schemas.User)
-def read_user(user_id: int, session: SessionDep):
-    db_user = crud.get_user(session, user_id)
-    if not db_user:
+@app.get("/users/", response_model=schemas.User)
+def read_user(name: str, password: str, session: SessionDep):
+    db_user = crud.get_user_by_name_and_password(session, name, password)
+    if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
-
-
-# Sales routes
-# @app.get("/sales/", response_model=list[schemas.Sales])
-# def read_sales(
-#     year: int = Query(None),
-#     skip: int = 0,
-#     limit: int = 10,
-#     session: SessionDep = Depends(get_session),
-# ):
-#     if year:
-#         sales = crud.get_sales_by_year(session, year)
-#     else:
-#         sales = crud.get_sales(session)
-#     return sales[skip : skip + limit]
-
-
-# @app.post("/sales/", response_model=schemas.Sales)
-# def create_sales(sales: schemas.SalesCreate, session: SessionDep):
-#     return crud.create_sales(session, sales)

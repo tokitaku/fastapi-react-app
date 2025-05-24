@@ -1,7 +1,7 @@
 from sqlmodel import SQLModel, Session, create_engine
 
 # SQLite 用の URL とエンジンを作成
-sqlite_file_name = "database.db"
+sqlite_file_name = "sales_info.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 connect_args = {"check_same_thread": False}
 
