@@ -3,7 +3,7 @@ from typing import List, Sequence
 from sqlmodel import Session, select
 
 from backend.models import Hero
-from backend.schemas import HeroCreate, HeroRead
+from backend.schemas import HeroCreate
 
 
 def create_hero(session: Session, hero_in: HeroCreate) -> Hero:
