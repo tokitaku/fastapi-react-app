@@ -37,9 +37,8 @@ def read_hero(hero_id: int, session: SessionDep):
     return hero
 
 
-@router.delete("/{hero_id}")
+@router.delete("/{hero_id}", status_code=204)
 def delete_hero(hero_id: int, session: SessionDep):
     success = crud.delete_hero(session=session, hero_id=hero_id)
     if not success:
         raise HTTPException(status_code=404, detail="Hero not found")
-    return {"ok": True}
