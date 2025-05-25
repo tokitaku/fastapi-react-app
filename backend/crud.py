@@ -4,8 +4,9 @@ import models
 import schemas
 
 
-def get_users(session: Session):
-    return session.exec(select(models.User)).all()
+def get_users(session: Session, skip: int = 0, limit: int = 100):
+    statement = select(models.User).offset(skip).limit(limit)
+    return session.exec(statement).all()
 
 
 def get_user(session: Session, user_id: int):
@@ -35,8 +36,9 @@ def create_user(session: Session, user: schemas.UserCreate):
     return db_user
 
 
-def get_sales(session: Session):
-    return session.exec(select(models.Sales)).all()
+def get_sales(session: Session, skip: int = 0, limit: int = 100):
+    statement = select(models.Sales).offset(skip).limit(limit)
+    return session.exec(statement).all()
 
 
 def get_sales_by_year(session: Session, year: int):
@@ -56,6 +58,11 @@ def get_sales_by_year_by_department(
 
 
 def create_sales(session: Session, sales: schemas.SalesCreate):
+    existing_sales = get_sales_by_year_by_department(
+        session, sales.year, sales.department, sales.sales
+    )
+    if existing_sales:
+        return existing_sales[0]
     db_sales = models.Sales(
         year=sales.year,
         department=sales.department,

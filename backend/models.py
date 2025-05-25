@@ -9,7 +9,6 @@ class User(SQLModel, table=True):
 
 
 class Sales(SQLModel, table=True):
-
     year: int = Field(primary_key=True, index=True)
     department: str = Field(primary_key=True, index=True)
     sales: float = Field(default=0.0)
