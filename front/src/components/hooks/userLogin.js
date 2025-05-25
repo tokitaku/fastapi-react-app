@@ -21,15 +21,13 @@ export const useUserLogin = () => {
         setIsLoggedIn(true);
         navigate("/");
 
-        // setLoginUser({ username: "", password: "" });
       } else {
         console.log("ログイン失敗: ユーザーが存在しません");
         navigate("/login-failed");
-        // alert("メールアドレスまたはパスワードが間違っています。");
       }
     } catch (error) {
       console.error("ログインリクエスト失敗:", error);
-      setLoginUser({ username: "", password: "" });
+      setLoginUser("");
       setIsLoggedIn(false);
       navigate("/login-failed");
     }
