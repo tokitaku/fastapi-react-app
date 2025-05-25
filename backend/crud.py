@@ -1,32 +1,74 @@
-from typing import List, Sequence
-
 from sqlmodel import Session, select
 
-from backend.models import Hero
-from backend.schemas import HeroCreate
+import models
+import schemas
 
 
-def create_hero(session: Session, hero_in: HeroCreate) -> Hero:
-    hero = Hero(**hero_in.model_dump())
-    session.add(hero)
-    session.commit()
-    session.refresh(hero)
-    return hero
-
-
-def get_hero(session: Session, hero_id: int) -> Hero | None:
-    return session.get(Hero, hero_id)
-
-
-def get_heroes(session: Session, *, offset: int = 0, limit: int = 100):
-    statement = select(Hero).offset(offset).limit(limit)
+def get_users(session: Session, skip: int = 0, limit: int = 100):
+    statement = select(models.User).offset(skip).limit(limit)
     return session.exec(statement).all()
 
 
-def delete_hero(session: Session, hero_id: int) -> bool:
-    hero = get_hero(session, hero_id)
-    if not hero:
-        return False  # 早期リターン
-    session.delete(hero)
+def get_user(session: Session, user_id: int):
+    return session.get(models.User, user_id)
+
+
+def get_user_by_name(session: Session, name: str):
+    statement = select(models.User).where(models.User.name == name)
+    return session.exec(statement).first()
+
+
+def get_user_by_name_and_password(session: Session, name: str, password: str):
+    statement = select(models.User).where(
+        models.User.name == name, models.User.password == password
+    )
+    return session.exec(statement).first()
+
+
+def create_user(session: Session, user: schemas.UserCreate):
+    db_user = models.User(
+        name=user.name,
+        password=user.password,
+    )
+    session.add(db_user)
     session.commit()
-    return True
+    session.refresh(db_user)
+    return db_user
+
+
+def get_sales(session: Session, skip: int = 0, limit: int = 100):
+    statement = select(models.Sales).offset(skip).limit(limit)
+    return session.exec(statement).all()
+
+
+def get_sales_by_year(session: Session, year: int):
+    statement = select(models.Sales).where(models.Sales.year == year)
+    return session.exec(statement).all()
+
+
+def get_sales_by_year_by_department(
+    session: Session, year: int, department: str, sales: float = 0
+):
+    statement = select(models.Sales).where(
+        models.Sales.year == year,
+        models.Sales.department == department,
+        models.Sales.sales == sales,
+    )
+    return session.exec(statement).all()
+
+
+def create_sales(session: Session, sales: schemas.SalesCreate):
+    existing_sales = get_sales_by_year_by_department(
+        session, sales.year, sales.department, sales.sales
+    )
+    if existing_sales:
+        return existing_sales[0]
+    db_sales = models.Sales(
+        year=sales.year,
+        department=sales.department,
+        sales=sales.sales,
+    )
+    session.add(db_sales)
+    session.commit()
+    session.refresh(db_sales)
+    return db_sales
