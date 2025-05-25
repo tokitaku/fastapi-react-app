@@ -2,22 +2,36 @@ import axios from "axios";
 
 
 export const useUserLogin = () => {
-  const login = async ({ email, password, setLoginUser, setIsLoggedIn, navigate }) => {
-    const endpoint = "https://jsonplaceholder.typicode.com/users";
+  const login = async ({
+    username,
+    password,
+    setLoginUser,
+    setIsLoggedIn,
+    navigate,
+  }) => {
+    const endpoint = "http://127.0.0.1:8000/user";
     try {
       const response = await axios.get(endpoint, {
-        params: { email, id: password },
+        params: { name: username, password: password },
       });
-      if (response.data.length > 0) {
-        setLoginUser(response.data[0].username);
+      console.log("ログインリクエスト成功:", response.data);
+      if (Object.keys(response.data).length > 0) {
+        // ユーザーが存在する場合、ログイン状態を更新
+        setLoginUser(username);
         setIsLoggedIn(true);
         navigate("/");
+
+        // setLoginUser({ username: "", password: "" });
       } else {
-        alert("メールアドレスまたはパスワードが間違っています。");
+        console.log("ログイン失敗: ユーザーが存在しません");
+        navigate("/login-failed");
+        // alert("メールアドレスまたはパスワードが間違っています。");
       }
     } catch (error) {
       console.error("ログインリクエスト失敗:", error);
-      alert("ログインに失敗しました。");
+      setLoginUser({ username: "", password: "" });
+      setIsLoggedIn(false);
+      navigate("/login-failed");
     }
   };
   return { login };

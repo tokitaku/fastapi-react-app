@@ -2,13 +2,12 @@ from typing import Annotated
 from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, HTTPException, Query
-from sqlmodel import Field, Session, SQLModel, create_engine, select
+from sqlmodel import Session
 from database import engine, create_db_and_tables, get_session
 import schemas
 import crud
 
-# Database configuration
-SessionDep = Annotated[Session, Depends(get_session)]
+from fastapi.middleware.cors import CORSMiddleware
 
 
 @asynccontextmanager
@@ -18,6 +17,23 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# Database configuration
+SessionDep = Annotated[Session, Depends(get_session)]
 
 
 # User routes
@@ -43,7 +59,7 @@ def read_users(session: SessionDep, skip: int = 0, limit: int = 10):
         raise HTTPException(status_code=500, detail=f"Failed to read users: {str(e)}")
 
 
-@app.get("/users/", response_model=schemas.User)
+@app.get("/user", response_model=schemas.User)
 def read_user(name: str, password: str, session: SessionDep):
     try:
         db_user = crud.get_user_by_name_and_password(session, name, password)
