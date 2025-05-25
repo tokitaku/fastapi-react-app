@@ -54,3 +54,25 @@ def create_sales(sales: schemas.SalesCreate, session: SessionDep):
         raise HTTPException(status_code=400, detail="Sales record already exists")
 
     return crud.create_sales(session, sales)
+
+
+@app.get("/sales/", response_model=list[schemas.Sales])
+def read_sales(
+    session: SessionDep,
+    year: int = Query(None, description="Filter by year"),
+    department: str = Query(None, description="Filter by department"),
+):
+    if year and department:
+        sales = crud.get_sales_by_year_by_department(session, year, department)
+    elif year:
+        sales = crud.get_sales_by_year(session, year)
+    else:
+        sales = crud.get_sales(session)
+
+    return sales
+
+
+@app.get("/sales/{year}", response_model=list[schemas.Sales])
+def read_sales_by_year(year: int, session: SessionDep):
+    sales = crud.get_sales_by_year(session, year)
+    return sales
