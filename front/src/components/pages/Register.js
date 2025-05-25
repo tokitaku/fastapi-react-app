@@ -1,28 +1,28 @@
 import React, { useState } from "react";
 import { Box, Container, Typography, TextField, Button, Link, Avatar, CssBaseline, Grid } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useRegister } from "../hooks/useRegister";
 
 export const Register = () => {
-  const [email, setEmail] = useState("");
+  const { register } = useRegister();
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
     let valid = true;
-    setEmailError("");
+    setUsernameError("");
     setPasswordError("");
     setConfirmPasswordError("");
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setEmailError("有効なメールアドレスを入力してください。");
-      valid = false;
-    }
-    if (!password || password.length < 6) {
-      setPasswordError("パスワードは6文字以上で入力してください。");
+    if (!username || username.length < 3) {
+      setUsernameError("ユーザー名は3文字以上で入力してください。");
       valid = false;
     }
     if (password !== confirmPassword) {
@@ -31,7 +31,11 @@ export const Register = () => {
     }
     if (valid) {
       // 登録処理をここに実装
-      console.log({ email, password });
+      register({
+        username,
+        password,
+        navigate,
+      });
     }
   };
 
@@ -57,15 +61,15 @@ export const Register = () => {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="メールアドレス"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="ユーザー名"
+            name="username"
+            autoComplete="username"
             autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={!!emailError}
-            helperText={emailError}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            error={!!usernameError}
+            helperText={usernameError}
           />
           <TextField
             margin="normal"
