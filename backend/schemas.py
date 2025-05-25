@@ -24,8 +24,6 @@ class SalesBase(BaseModel):
 
 
 class Sales(SalesBase):
-    id: int
-
     class Config:
         from_attributes = True
 

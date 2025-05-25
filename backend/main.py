@@ -43,3 +43,14 @@ def read_user(name: str, password: str, session: SessionDep):
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
+
+
+@app.post("/sales/", response_model=schemas.Sales)
+def create_sales(sales: schemas.SalesCreate, session: SessionDep):
+    db_sales = crud.get_sales_by_year_by_department(
+        session, sales.year, sales.department, sales.sales
+    )
+    if db_sales:
+        raise HTTPException(status_code=400, detail="Sales record already exists")
+
+    return crud.create_sales(session, sales)

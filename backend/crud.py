@@ -44,6 +44,17 @@ def get_sales_by_year(session: Session, year: int):
     return session.exec(statement).all()
 
 
+def get_sales_by_year_by_department(
+    session: Session, year: int, department: str, sales: float = 0
+):
+    statement = select(models.Sales).where(
+        models.Sales.year == year,
+        models.Sales.department == department,
+        models.Sales.sales == sales,
+    )
+    return session.exec(statement).all()
+
+
 def create_sales(session: Session, sales: schemas.SalesCreate):
     db_sales = models.Sales(
         year=sales.year,
