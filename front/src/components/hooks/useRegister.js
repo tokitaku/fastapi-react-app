@@ -18,7 +18,8 @@ export const useRegister = () => {
       // レスポンスの検証（バックエンドの応答にidが含まれているか確認）
       if (response.data && response.data.id) {
         console.log("登録リクエスト成功:", response.data);
-        navigate("/register-succeeded");
+        // ユーザー名をstate経由で渡す
+        navigate("/register-succeeded", { state: name });
       } else {
         // レスポンスはあるが期待する形式ではない場合
         console.error("登録レスポンスの形式が不正:", response.data);
