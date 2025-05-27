@@ -9,6 +9,9 @@ import { LoginFailed } from "./components/pages/LoginFailed";
 import { Register } from "./components/pages/Register";
 import { LoginUserProvider } from "./components/providers/LoginUserProvider";
 import { Footer } from "./components/templates/Footer";
+import { RegisterSucceeded } from "./components/pages/RegisterSucceeded";
+import { RegisterFailed } from "./components/pages/RegisterFailed";
+import { NotFound } from "./components/pages/NotFound";
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
           <Route path="/login-failed" element={<LoginFailed />} />
           <Route path="/register" element={<Register />} />
           {/* <Route path="/result" element={<Result />} /> */}
+          <Route path="/register-succeeded" element={<RegisterSucceeded />} />
+          <Route path="/register-failed" element={<RegisterFailed />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       <Footer />
