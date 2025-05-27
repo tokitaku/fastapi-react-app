@@ -15,26 +15,26 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { LoginUserProviderContext } from "../providers/LoginUserProvider";
-import { useUserLogin } from "../hooks/userLogin";
+import { useUserLogin } from "../hooks/useLogin";
 
 export const Login = () => {
   const { setLoginUser, setIsLoggedIn } = useContext(LoginUserProviderContext);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
-  const [emailError, setEmailError] = useState("");
+  const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
   const { login } = useUserLogin();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setEmailError("");
+    setUsernameError("");
     setPasswordError("");
 
     let isValid = true;
-    if (!email) {
-      setEmailError("メールアドレスを入力してください。");
+    if (!username) {
+      setUsernameError("ユーザー名を入力してください。");
       isValid = false;
     }
     if (!password) {
@@ -44,7 +44,7 @@ export const Login = () => {
     if (!isValid) return;
 
     await login({
-      email,
+      username,
       password,
       setLoginUser,
       setIsLoggedIn,
@@ -74,15 +74,15 @@ export const Login = () => {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="メールアドレス"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="ユーザー名"
+            name="username"
+            autoComplete="username"
             autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={!!emailError}
-            helperText={emailError}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            error={!!usernameError}
+            helperText={usernameError}
           />
           <TextField
             margin="normal"
