@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { LoginUserProviderContext } from "../providers/LoginUserProvider";
 import { ReadCsv } from "../elements/ReadCsv";
 import { Navigate } from "react-router-dom";
+import { BarChart } from "../elements/BarChart";
 
 export const Home = () => {
   const { isLogined } = useContext(LoginUserProviderContext);
@@ -20,6 +21,8 @@ export const Home = () => {
         <Header />
         <h3>CSVをデータベースへ格納</h3>
         <ReadCsv handleDataChange={handleDataChange} />
+        <h3>グラフ表示</h3>
+        <BarChart data={data} />
       </>
     );
   }
