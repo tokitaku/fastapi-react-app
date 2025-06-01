@@ -1,7 +1,11 @@
 from sqlmodel import SQLModel, Session, create_engine
+from pathlib import Path
 
 # SQLite 用の URL とエンジンを作成
-sqlite_file_name = "sales_info.db"
+# 絶対パスを取得してからパスを構築
+current_file_path = Path(__file__).resolve()
+project_root = current_file_path.parents[1]  # 1階層上の親ディレクトリ
+sqlite_file_name = project_root / "sales_info.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 connect_args = {"check_same_thread": False}
 
