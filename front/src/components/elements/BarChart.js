@@ -1,41 +1,50 @@
 import { Chart as ChartJS, registerables } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { faker } from "@faker-js/faker";
+import AspectRatio from "@mui/joy/AspectRatio";
+import { Grid } from "@mui/material";
 
 ChartJS.register(...registerables);
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top",
-    },
-    title: {
-      display: true,
-      text: "Chart.js Bar Chart",
-    },
-  },
-};
+export const BarChart = ({ data }) => {
+  if (data.length === 0 || data === undefined) {
+    return <p>データがありません</p>;
+  }
+  const obj = {};
+  for (let i = 0; i < data.length; i++) {
+    obj[data[i][0]] = data[i].slice(1);
+  }
+  console.log(obj);
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+  // 1列目: 年、2列目: 売上
+  const labels = obj[Object.keys(obj)[0]]; // 部署
+  const year = obj[Object.keys(obj)[1]][0]; // 年
+  const sales = obj[Object.keys(obj)[2]]; // 売上
 
-const chatData = {
-  labels,
-  datasets: [
+  const datasets = [
     {
-      label: "Dataset 1",
-      data: labels.map(() => faker.number.int({ min: 0, max: 1000 })),
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Dataset 2",
-      data: labels.map(() => faker.number.int({ min: 0, max: 1000 })),
+      label: year,
+      data: sales,
       backgroundColor: "rgba(53, 162, 235, 0.5)",
     },
-  ],
-};
+  ];
 
-export const BarChart = ({ data }) => {
-  console.log(data);
-  return <Bar options={options} data={chatData} />;
+  const chartData = {
+    labels,
+    datasets,
+  };
+
+  return (
+    <>
+      <h3>部署別売上</h3>
+      <Grid container justifyContent={"center"} sx={{ mb: 2 }}>
+        <AspectRatio
+          ratio="2/1"
+          sx={{ width: { xs: "100%", sm: "80%", md: "60%", lg: "50%" } }}
+          variant="plain"
+        >
+          <Bar data={chartData} />
+        </AspectRatio>
+      </Grid>
+    </>
+  );
 };
