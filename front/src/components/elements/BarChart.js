@@ -6,7 +6,7 @@ import { Grid } from "@mui/material";
 ChartJS.register(...registerables);
 
 export const BarChart = ({ data }) => {
-  if (data.length === 0 || data === undefined) {
+  if (data === undefined || data.length === 0) {
     return <p>データがありません</p>;
   }
   const obj = {};
