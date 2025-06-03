@@ -15,7 +15,7 @@ export const ReadDatabase = ({ year, handleDataChange }) => {
   useEffect(() => {
     if (year) {
       const promise = onClickReadSales(year);
-      
+
       promise.then((data) => {
         if (data.length > 0) {
           const transformedData = transformSalesData(data);
@@ -26,10 +26,7 @@ export const ReadDatabase = ({ year, handleDataChange }) => {
         }
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [year]);
-
-
+  }, [year, handleDataChange, onClickReadSales]);
 
   return (
     <div>
