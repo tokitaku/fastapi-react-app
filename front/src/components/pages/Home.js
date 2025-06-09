@@ -8,7 +8,7 @@ import { SelectYear } from "../elements/SelectYear";
 import { ReadDatabase } from "../elements/ReadDatabase";
 
 export const Home = () => {
-  const { isLogined } = useContext(LoginUserProviderContext);
+  const { isLoggedIn } = useContext(LoginUserProviderContext);
   const [year, setYear] = useState("");
   const [data, setData] = useState([]);
 
@@ -24,7 +24,7 @@ export const Home = () => {
     setData(newData);
   }, []);
 
-  if (!isLogined) {
+  if (!isLoggedIn) {
     return <Navigate to="/login" />;
   } else {
     return (
