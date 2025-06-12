@@ -1,4 +1,4 @@
-name: Create PR from develop to master
+name: Create PR from develop to main
 
 on:
   # developブランチへのプッシュ時に実行
@@ -25,23 +25,23 @@ jobs:
 
       - name: Create Pull Request if not exists
         run: |
-          # developブランチがmasterと同じでない場合のみPRを作成
-          if ! git diff --quiet origin/develop origin/master; then
+          # developブランチがmainと同じでない場合のみPRを作成
+          if ! git diff --quiet origin/develop origin/main; then
             # 既存のPRがあるか確認
-            PR_EXISTS=$(gh pr list --base master --head develop --json number | grep -c "number" || echo "0")
+            PR_EXISTS=$(gh pr list --base main --head develop --json number | grep -c "number" || echo "0")
             
             if [ "$PR_EXISTS" -eq "0" ]; then
-              echo "Creating new PR from develop to master"
+              echo "Creating new PR from develop to main"
               gh pr create \
-                --base master \
+                --base main \
                 --head develop \
-                --title "【自動PR】developからmasterへの更新" \
-                --body "developブランチの変更をmasterブランチにマージするための自動プルリクエストです。"
+                --title "【自動PR】developからmainへの更新" \
+                --body "developブランチの変更をmainブランチにマージするための自動プルリクエストです。"
             else
-              echo "PR from develop to master already exists"
+              echo "PR from develop to main already exists"
             fi
           else
-            echo "No changes between develop and master branches"
+            echo "No changes between develop and main branches"
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
