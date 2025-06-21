@@ -16,8 +16,7 @@ sqlmodel = "^0.0.24"
 
 [tool.poetry.group.dev.dependencies]
 uvicorn = "^0.34.2"
-pytest = "^8.2"
-pytest-asyncio = "^0.23"
+pytest = "^8.4.1"
 
 [build-system]
 requires = ["poetry-core"]
