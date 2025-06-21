@@ -118,3 +118,25 @@ def read_sales_by_year(year: int, session: SessionDep):
         raise HTTPException(
             status_code=500, detail=f"Failed to read sales by year: {str(e)}"
         )
+
+
+# Word routes
+@app.post("/words/", response_model=schemas.Word)
+def create_word(word: schemas.WordCreate, session: SessionDep):
+    db_word = crud.get_word_by_text(session, word.word)
+    if db_word:
+        raise HTTPException(status_code=400, detail="Word already exists")
+    try:
+        return crud.create_word(session, word)
+    except Exception as e:
+        session.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to create word: {str(e)}")
+
+
+@app.get("/words/", response_model=list[schemas.Word])
+def read_words(session: SessionDep, skip: int = 0, limit: int = 10):
+    try:
+        words = crud.get_words(session, skip, limit)
+        return words
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to read words: {str(e)}")

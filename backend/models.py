@@ -14,3 +14,8 @@ class Sales(SQLModel, table=True):
     year: int = Field(primary_key=True, index=True)
     department: str = Field(primary_key=True, index=True)
     sales: float = Field(default=0.0)
+
+
+class Word(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True, index=True)
+    word: str = Field(index=True)

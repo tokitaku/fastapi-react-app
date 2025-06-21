@@ -80,3 +80,24 @@ def test_read_sales_by_year(client):
     data = res.json()
     assert len(data) == 2
 
+
+def test_create_and_read_word(client):
+    word_data = {"word": "Hello"}
+    res = client.post("/words/", json=word_data)
+    assert res.status_code == 200
+    data = res.json()
+    assert data["word"] == "Hello"
+
+    res = client.get("/words/")
+    assert res.status_code == 200
+    words = res.json()
+    assert any(w["word"] == "Hello" for w in words)
+
+
+def test_create_duplicate_word(client):
+    word_data = {"word": "World"}
+    res1 = client.post("/words/", json=word_data)
+    assert res1.status_code == 200
+    res2 = client.post("/words/", json=word_data)
+    assert res2.status_code == 400
+

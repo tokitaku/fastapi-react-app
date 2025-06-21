@@ -72,3 +72,21 @@ def create_sales(session: Session, sales: schemas.SalesCreate):
     session.commit()
     session.refresh(db_sales)
     return db_sales
+
+
+def get_words(session: Session, skip: int = 0, limit: int = 100):
+    statement = select(models.Word).offset(skip).limit(limit)
+    return session.exec(statement).all()
+
+
+def get_word_by_text(session: Session, word: str):
+    statement = select(models.Word).where(models.Word.word == word)
+    return session.exec(statement).first()
+
+
+def create_word(session: Session, word: schemas.WordCreate):
+    db_word = models.Word(word=word.word)
+    session.add(db_word)
+    session.commit()
+    session.refresh(db_word)
+    return db_word
