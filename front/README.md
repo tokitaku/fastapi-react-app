@@ -1,6 +1,6 @@
 # Getting Started with Vite
 
-This project now uses [Vite](https://vitejs.dev/) instead of Create React App.
+This project now uses [Vite](https://vitejs.dev/) with **React + TypeScript** instead of Create React App.
 
 ## Available Scripts
 
