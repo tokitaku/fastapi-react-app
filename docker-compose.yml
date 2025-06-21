@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    volumes:
+      - ./backend:/app/backend
+      - ./sales_info.db:/app/sales_info.db
+    ports:
+      - "8000:8000"
+    command: uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
