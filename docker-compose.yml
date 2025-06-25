@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   backend:
     build:
@@ -6,8 +5,8 @@ services:
       dockerfile: Dockerfile
     volumes:
       # ホットリロード用：ローカルファイルをコンテナにマウント
-      - ./backend:/app
-      - ./sales_info.db:/app/sales_info.db
+      - ./backend:/app/backend
+      - ./sales_info.db:/app/backend/sales_info.db
     ports:
       - "8001:8000"  # ホスト8001番ポートをコンテナ8000番ポートにマッピング
     environment:
@@ -16,4 +15,5 @@ services:
       - PYTHONUNBUFFERED=1         # 標準出力のバッファリングを無効化（リアルタイムログ表示）
       - WATCHFILES_FORCE_POLLING=true  # Docker環境でのファイル変更検知を強制的にポーリング方式に
     # 開発用コマンド：ホットリロード有効
-    command: fastapi dev main.py --host 0.0.0.0 --port 8000
+    command: sh -c "cd /app/backend && fastapi dev main.py --host 0.0.0.0 --port 8000"
+    working_dir: /app/backend

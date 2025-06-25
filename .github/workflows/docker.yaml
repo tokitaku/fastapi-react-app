@@ -13,4 +13,4 @@ jobs:
       - name: Build Docker image
         run: docker compose -f docker-compose.yml build
       - name: Run tests in container
-        run: docker compose -f docker-compose.yml run --rm backend pytest
+        run: docker compose -f docker-compose.yml run --rm backend sh -c "cd /app/backend && pytest"
