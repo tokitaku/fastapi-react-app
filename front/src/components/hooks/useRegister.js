@@ -6,7 +6,7 @@ export const useRegister = () => {
     password,
     navigate,
   }) => {
-    const endpoint = "http://127.0.0.1:8000/users/";
+    const endpoint = "http://localhost:8001/users/";
     
     try {
       // リクエスト送信

@@ -1,9 +1,10 @@
 # セキュリティを考慮した開発用Docker設定
 FROM python:3.12-slim
 
-# システムの更新とセキュリティパッチの適用
-RUN apt-get update && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends \
+# 必要なパッケージのインストール
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
     build-essential \
     curl \
     && apt-get clean \

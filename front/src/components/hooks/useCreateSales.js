@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const useCreateSales = () => {
   const onClickCreateSales = async (data) => {
-    const endpoint = "http://127.0.0.1:8000/sales";
+    const endpoint = "http://localhost:8001/sales";
     try {
       // 1列目から最後の列まで処理（0列目はヘッダーなのでスキップ）
       for (let i = 1; i < data[0].length; i++) {
