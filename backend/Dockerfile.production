@@ -4,14 +4,18 @@ FROM python:3.10-slim as builder
 WORKDIR /app
 
 # Install Poetry
-RUN pip install --no-cache-dir poetry
+RUN pip install --no-cache-dir "poetry==1.8.1"
 
 # Copy dependency files
 COPY backend/pyproject.toml backend/poetry.lock /app/
 
 # Configure Poetry and export dependencies
 RUN poetry config virtualenvs.create false \
-    && poetry export -f requirements.txt --output requirements.txt --without-hashes
+    && poetry export \
+    --without-hashes \
+    --without dev \
+    -f requirements.txt \
+    --output requirements.txt
 
 # Production stage
 FROM python:3.10-slim as production

@@ -16,15 +16,9 @@ RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir "poetry==1.8.3"
 
 # 依存関係ファイルをコピーしてインストール
-COPY pyproject.toml poetry.lock /app/backend/
-RUN cd /app/backend && poetry config virtualenvs.create false \
+COPY pyproject.toml poetry.lock /app/
+RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-root --no-ansi
 
 # アプリケーションコードをコピー
-COPY . /app/backend
-
-# Pythonパスを設定
-ENV PYTHONPATH=/app
-
-# 作業ディレクトリをbackendに設定
-WORKDIR /app/backend
+COPY . /app
