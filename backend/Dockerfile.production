@@ -1,0 +1,34 @@
+# Multi-stage Dockerfile for production
+FROM python:3.10-slim as builder
+
+WORKDIR /app
+
+# Install Poetry
+RUN pip install --no-cache-dir poetry
+
+# Copy dependency files
+COPY backend/pyproject.toml backend/poetry.lock /app/
+
+# Configure Poetry and export dependencies
+RUN poetry config virtualenvs.create false \
+    && poetry export -f requirements.txt --output requirements.txt --without-hashes
+
+# Production stage
+FROM python:3.10-slim as production
+
+WORKDIR /app
+
+# Copy requirements from builder stage
+COPY --from=builder /app/requirements.txt /app/
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY backend /app
+
+# Create non-root user for security
+RUN adduser --disabled-password --gecos '' appuser
+USER appuser
+
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]

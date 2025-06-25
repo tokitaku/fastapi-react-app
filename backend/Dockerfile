@@ -2,12 +2,10 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir poetry
+RUN pip install --no-cache-dir "poetry==1.8.1"
 
-COPY backend/pyproject.toml backend/poetry.lock /app/
+COPY pyproject.toml poetry.lock /app/
 RUN poetry config virtualenvs.create false \
-    && poetry install --no-interaction
+    && poetry install --no-interaction --no-root --no-ansi
 
-COPY backend /app
-
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+COPY . /app
