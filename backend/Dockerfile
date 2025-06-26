@@ -23,3 +23,11 @@ RUN poetry config virtualenvs.create false \
 
 # アプリケーションコードをコピー
 COPY . /app
+
+# backendディレクトリへのシンボリックリンクを作成
+RUN ln -s /app /backend
+
+# Pythonパスを設定してbackendディレクトリをパッケージとして認識させる
+ENV PYTHONPATH=/app:/
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
