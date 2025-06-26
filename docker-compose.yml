@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: ./backend  # ビルドコンテキストをbackendディレクトリに限定（ビルド高速化）
+      dockerfile: Dockerfile
+    volumes:
+      # ホットリロード用：ローカルファイルをコンテナにマウント
+      - ./backend:/app/backend
+      - ./sales_info.db:/app/backend/sales_info.db
+    ports:
+      - "8001:8000"  # ホスト8001番ポートをコンテナ8000番ポートにマッピング
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONDONTWRITEBYTECODE=1  # .pycファイルの生成を無効化（開発環境をクリーンに保つ）
+      - PYTHONUNBUFFERED=1         # 標準出力のバッファリングを無効化（リアルタイムログ表示）
+      - WATCHFILES_FORCE_POLLING=true  # Docker環境でのファイル変更検知を強制的にポーリング方式に
+    working_dir: /app/backend
+    # 開発用コマンド：ホットリロード有効
+    command: fastapi dev main.py --host 0.0.0.0 --port 8000

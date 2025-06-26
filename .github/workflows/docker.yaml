@@ -1,0 +1,16 @@
+name: Build and Test Docker
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker compose -f docker-compose.yml build
+      - name: Run tests in container
+        run: docker compose -f docker-compose.yml run --rm backend pytest
