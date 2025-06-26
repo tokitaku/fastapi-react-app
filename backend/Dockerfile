@@ -10,22 +10,19 @@ RUN set -eux; \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+WORKDIR /app/backend
 
 # Poetryのインストール
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir "poetry==1.8.3"
 
 # 依存関係ファイルをコピーしてインストール
-COPY pyproject.toml poetry.lock /app/backend/
-RUN cd /app/backend && poetry config virtualenvs.create false \
+COPY pyproject.toml poetry.lock ./
+RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-root --no-ansi
 
 # アプリケーションコードをコピー
-COPY . /app/backend
-
-# 作業ディレクトリを設定
-WORKDIR /app/backend
+COPY . .
 
 # Pythonパスを設定
 ENV PYTHONPATH=/app

@@ -3,9 +3,9 @@ from fastapi.testclient import TestClient
 from sqlmodel import SQLModel, Session, create_engine
 import sqlalchemy
 
-from backend import models
-from backend.main import app
-from backend.database import get_session
+from .. import models
+from ..main import app
+from ..database import get_session
 
 
 @pytest.fixture(name="client")
