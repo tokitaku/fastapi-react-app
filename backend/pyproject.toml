@@ -4,7 +4,6 @@ version = "0.1.0"
 description = ""
 authors = []
 readme = "README.md"
-packages = [{include = "backend"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -22,3 +21,10 @@ pytest-asyncio = "^0.23"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = ["..", "."]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
