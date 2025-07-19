@@ -118,7 +118,7 @@ export const Login: React.FC = () => {
             ログイン
           </Button>
           <Grid container justifyContent="flex-end">
-            <Grid item>
+            <Grid>
               <Link component={RouterLink} to="/register" variant="body2">
                 新規登録はこちら
               </Link>

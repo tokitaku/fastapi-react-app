@@ -18,7 +18,7 @@ export const useUserLogin = () => {
     setIsLoggedIn,
     navigate,
   }: LoginParams): Promise<void> => {
-    const endpoint = "http://localhost:8001/user";
+    const endpoint = "http://localhost:8000/user";
     try {
       const response = await axios.get(endpoint, {
         params: { name: username, password: password },

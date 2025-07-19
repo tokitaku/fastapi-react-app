@@ -8,7 +8,8 @@ import { SelectYear } from "../elements/SelectYear";
 import { ReadDatabase } from "../elements/ReadDatabase";
 
 export const Home: React.FC = () => {
-  const { isLoggedIn } = useContext(LoginUserProviderContext);
+  const context = useContext(LoginUserProviderContext);
+  const isLoggedIn = context?.isLoggedIn ?? false;
   const [year, setYear] = useState<string>("");
   const [data, setData] = useState<(string | number)[][]>([]);
 

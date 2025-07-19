@@ -13,7 +13,7 @@ export const useRegister = () => {
     password,
     navigate,
   }: RegisterParams): Promise<void> => {
-    const endpoint = "http://localhost:8001/users/";
+    const endpoint = "http://localhost:8000/users/";
     
     try {
       // リクエスト送信

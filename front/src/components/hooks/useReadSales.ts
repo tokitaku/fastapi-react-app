@@ -6,7 +6,7 @@ export interface ReadSalesParams {
 }
 
 export const useReadSales = () => {
-  const baseEndpoint = "http://localhost:8001/sales/";
+  const baseEndpoint = "http://localhost:8000/sales/";
   const onClickReadSales = useCallback(async (year: ReadSalesParams["year"]) => {
     const endpoint = baseEndpoint + year;
     const res = await axios.get(endpoint);
