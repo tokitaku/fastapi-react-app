@@ -1,11 +1,15 @@
-import { Box, InputLabel, Select, MenuItem } from "@mui/material";
+import { Box, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
 
 
-export const SelectYear = ({ handleYearChange }) => {
-  const handleChange = (event) => {
-    const selectedYear = event.target.value;
+export interface SelectYearProps {
+  handleYearChange: (year: string) => void;
+}
+
+export const SelectYear: React.FC<SelectYearProps> = ({ handleYearChange }) => {
+  const handleChange = (event: SelectChangeEvent<string>) => {
+    const selectedYear = event.target.value as string;
     handleYearChange(selectedYear);
-  }
+  };
   return (
     <Box sx={{ minWidth: 120, mb: 2 }}>
       <InputLabel id="sales-year">年度</InputLabel>

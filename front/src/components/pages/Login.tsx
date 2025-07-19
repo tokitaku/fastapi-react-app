@@ -17,17 +17,17 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { LoginUserProviderContext } from "../providers/LoginUserProvider";
 import { useUserLogin } from "../hooks/useLogin";
 
-export const Login = () => {
+export const Login: React.FC = () => {
   const { setLoginUser, setIsLoggedIn } = useContext(LoginUserProviderContext);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(false);
-  const [usernameError, setUsernameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [remember, setRemember] = useState<boolean>(false);
+  const [usernameError, setUsernameError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
   const navigate = useNavigate();
   const { login } = useUserLogin();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setUsernameError("");
     setPasswordError("");
@@ -118,7 +118,7 @@ export const Login = () => {
             ログイン
           </Button>
           <Grid container justifyContent="flex-end">
-            <Grid item>
+            <Grid>
               <Link component={RouterLink} to="/register" variant="body2">
                 新規登録はこちら
               </Link>

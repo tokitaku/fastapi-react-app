@@ -1,15 +1,24 @@
 import axios from "axios";
+import { Dispatch, SetStateAction, useCallback } from "react";
+import { NavigateFunction } from "react-router-dom";
 
+export interface LoginParams {
+  username: string;
+  password: string;
+  setLoginUser: Dispatch<SetStateAction<string>>;
+  setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
+  navigate: NavigateFunction;
+}
 
 export const useUserLogin = () => {
-  const login = async ({
+  const login = useCallback(async ({
     username,
     password,
     setLoginUser,
     setIsLoggedIn,
     navigate,
-  }) => {
-    const endpoint = "http://localhost:8001/user";
+  }: LoginParams): Promise<void> => {
+    const endpoint = "http://localhost:8000/user";
     try {
       const response = await axios.get(endpoint, {
         params: { name: username, password: password },
@@ -31,6 +40,6 @@ export const useUserLogin = () => {
       setIsLoggedIn(false);
       navigate("/login-failed");
     }
-  };
+  }, []);
   return { login };
 };

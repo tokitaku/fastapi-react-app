@@ -13,9 +13,13 @@ import {
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
-export const RegisterSucceeded = () => {
+interface LocationState {
+  username?: string;
+}
+
+export const RegisterSucceeded: React.FC = () => {
   const location = useLocation();
-  const { state } = location;
+  const { state } = location as { state?: LocationState };
 
   return (
     <Container component="main" maxWidth="sm">
@@ -49,9 +53,9 @@ export const RegisterSucceeded = () => {
           <Typography variant="h6" align="center" gutterBottom>
             ユーザー登録が完了しました！
           </Typography>
-          {state && (
+          {state?.username && (
             <Typography variant="body1" align="center">
-              ユーザー名: <strong>{state}</strong>
+              ユーザー名: <strong>{state.username}</strong>
             </Typography>
           )}
         </Paper>

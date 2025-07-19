@@ -3,10 +3,14 @@ import ReactFileReader from "react-file-reader";
 import Button from "@mui/material/Button";
 import { useCreateSales } from "../hooks/useCreateSales";
 
-export const ReadCsv = ({ handleDataChange }) => {
+export interface ReadCsvProps {
+  handleDataChange: (data: (string | number)[][]) => void;
+}
+
+export const ReadCsv: React.FC<ReadCsvProps> = ({ handleDataChange }) => {
   const { onClickCreateSales } = useCreateSales();
 
-  const uploadFile = (files) => {
+  const uploadFile = (files: FileList) => {
     const file = files[0];
     Papa.parse(file, {
       header: false, // ヘッダーとして解析せず、配列の配列として取得

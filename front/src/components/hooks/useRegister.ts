@@ -1,12 +1,19 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { NavigateFunction } from "react-router-dom";
+
+export interface RegisterParams {
+  name: string;
+  password: string;
+  navigate: NavigateFunction;
+}
 
 export const useRegister = () => {
   const register = async ({
     name,
     password,
     navigate,
-  }) => {
-    const endpoint = "http://localhost:8001/users/";
+  }: RegisterParams): Promise<void> => {
+    const endpoint = "http://localhost:8000/users/";
     
     try {
       // リクエスト送信
@@ -19,23 +26,25 @@ export const useRegister = () => {
       if (response.data && response.data.id) {
         console.log("登録リクエスト成功:", response.data);
         // ユーザー名をstate経由で渡す
-        navigate("/register-succeeded", { state: name });
+        navigate("/register-succeeded", { state: { username: name } });
       } else {
         // レスポンスはあるが期待する形式ではない場合
         console.error("登録レスポンスの形式が不正:", response.data);
         navigate("/register-failed");
       }
-    } catch (error) {
+    } catch (error: unknown) {
       // エラー種別による分岐
-      if (error.response) {
-        // サーバーからのエラーレスポンスがある場合 (400, 500など)
-        console.error(`エラー ${error.response.status}:`, error.response.data);
-      } else if (error.request) {
-        // サーバーからの応答がない場合 (ネットワークエラーなど)
-        console.error("サーバーからの応答がありません");
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          // サーバーからのエラーレスポンスがある場合 (400, 500など)
+          console.error(`エラー ${error.response.status}:`, error.response.data);
+        } else if (error.request) {
+          // サーバーからの応答がない場合 (ネットワークエラーなど)
+          console.error("サーバーからの応答がありません");
+        }
       } else {
         // その他のエラー
-        console.error("登録エラー:", error.message);
+        console.error("登録エラー:", error);
       }
       navigate("/register-failed");
     }

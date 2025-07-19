@@ -1,7 +1,8 @@
 
+import React from "react";
 import { Typography } from "@mui/material";
 
-function Copyright(props) {
+const Copyright: React.FC<React.HTMLAttributes<HTMLElement>> = React.memo((props) => {
   return (
     <Typography
       variant="body2"
@@ -15,12 +16,14 @@ function Copyright(props) {
       {"."}
     </Typography>
   );
-}
+});
 
-export const Footer = () => {
-  return (
-    <>
-      <Copyright />
-    </>
-  )
-}
+Copyright.displayName = 'Copyright';
+
+export const Footer: React.FC = React.memo(() => (
+  <footer>
+    <Copyright />
+  </footer>
+));
+
+Footer.displayName = 'Footer';

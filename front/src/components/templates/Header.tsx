@@ -3,7 +3,7 @@ import { BasicMenu } from "../elements/BasicMenu";
 import { useContext } from "react";
 import { LoginUserProviderContext } from "../providers/LoginUserProvider";
 
-export const Header = () => {
+export const Header: React.FC = () => {
   const { loginUser } = useContext(LoginUserProviderContext);
   return (
     <AppBar position="static">

@@ -1,25 +1,26 @@
-import {useState} from "react";
+import { useState, useCallback } from "react";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 
 export const BasicMenu = () => {
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleClickHome = () => {
+  const handleClickHome = useCallback(() => {
     navigate("/");
-  };
-  const handleClickLogin = () => {
+  }, [navigate]);
+
+  const handleClickLogin = useCallback(() => {
     navigate("/login");
-  };
+  }, [navigate]);
     
 
   return (

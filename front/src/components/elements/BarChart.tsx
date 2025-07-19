@@ -3,9 +3,13 @@ import { Bar } from "react-chartjs-2";
 import AspectRatio from "@mui/joy/AspectRatio";
 import { Grid } from "@mui/material";
 
+export interface BarChartProps {
+  data: (string | number)[][];
+}
+
 ChartJS.register(...registerables);
 
-export const BarChart = ({ data }) => {
+export const BarChart: React.FC<BarChartProps> = ({ data }) => {
   if (data === undefined || data.length === 0) {
     return <p>データがありません</p>;
   }

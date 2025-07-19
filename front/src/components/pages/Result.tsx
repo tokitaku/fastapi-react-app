@@ -1,9 +1,16 @@
-import { useLocation } from "react-router-dom"
-import { useState } from "react"
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
 
-export const Result = () => {
-  const location = useLocation()
-    const [result, setResult] = useState(location.state)
+export interface ResultState {
+  name: string;
+  age: string;
+  gender: string;
+  comment: string;
+}
+
+export const Result: React.FC = () => {
+  const location = useLocation();
+  const [result] = useState<ResultState>(location.state as ResultState);
     
   return (
     <>
