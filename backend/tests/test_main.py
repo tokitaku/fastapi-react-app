@@ -101,3 +101,33 @@ def test_create_duplicate_word(client):
     res2 = client.post("/words/", json=word_data)
     assert res2.status_code == 400
 
+
+def test_get_word_by_text_success(client):
+    # まず単語を作成
+    word_data = {"word": "Test"}
+    create_response = client.post("/words/", json=word_data)
+    assert create_response.status_code == 200
+
+    # 作成した単語を検索
+    response = client.get("/words/Test")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["word"] == "Test"
+
+
+def test_get_word_by_text_not_found(client):
+    response = client.get("/words/NonExistent")
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Word not found"
+
+
+def test_get_word_by_text_invalid_format(client):
+    response = client.get("/words/test123")
+    assert response.status_code == 400
+    assert "English letters" in response.json()["detail"]
+
+
+def test_get_word_by_text_special_characters(client):
+    response = client.get("/words/hello!")
+    assert response.status_code == 400
+    assert "English letters" in response.json()["detail"]

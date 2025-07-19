@@ -140,3 +140,27 @@ def read_words(session: SessionDep, skip: int = 0, limit: int = 10):
         return words
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read words: {str(e)}")
+
+
+@app.get("/words/{word_text}", response_model=schemas.Word)
+def get_word_by_text(word_text: str, session: SessionDep):
+    """
+    特定の単語を検索して取得
+    """
+    # 英語バリデーション
+    import re
+
+    if not re.match(r"^[A-Za-z]+$", word_text):
+        raise HTTPException(
+            status_code=400, detail="Word must contain only English letters"
+        )
+
+    try:
+        db_word = crud.get_word_by_text(session, word_text)
+        if db_word is None:
+            raise HTTPException(status_code=404, detail="Word not found")
+        return db_word
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get word: {str(e)}")
