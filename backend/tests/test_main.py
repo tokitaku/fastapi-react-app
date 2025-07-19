@@ -28,7 +28,7 @@ def client_fixture():
 
 
 def test_create_and_read_user(client):
-    user_data = {"name": "alice", "password": "secret"}
+    user_data = {"name": "alice", "password": "Secret12!"}
     response = client.post("/users/", json=user_data)
     assert response.status_code == 200
     data = response.json()
@@ -43,11 +43,17 @@ def test_create_and_read_user(client):
 
 
 def test_create_duplicate_user(client):
-    user_data = {"name": "bob", "password": "secret"}
+    user_data = {"name": "bob", "password": "Secret12!"}
     res1 = client.post("/users/", json=user_data)
     assert res1.status_code == 200
     res2 = client.post("/users/", json=user_data)
     assert res2.status_code == 400
+
+
+def test_create_user_invalid_password(client):
+    invalid_data = {"name": "charlie", "password": "short"}
+    res = client.post("/users/", json=invalid_data)
+    assert res.status_code == 422
 
 
 def test_create_and_read_sales(client):
