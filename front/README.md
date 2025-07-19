@@ -17,3 +17,7 @@ Build the app for production.
 ### `npm run preview`
 
 Preview the production build locally.
+
+### `npm test`
+
+Run unit tests with [Vitest](https://vitest.dev/).
