@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -14,12 +14,13 @@ export const BasicMenu = () => {
     setAnchorEl(null);
   };
 
-  const handleClickHome = () => {
+  const handleClickHome = useCallback(() => {
     navigate("/");
-  };
-  const handleClickLogin = () => {
+  }, [navigate]);
+
+  const handleClickLogin = useCallback(() => {
     navigate("/login");
-  };
+  }, [navigate]);
     
 
   return (

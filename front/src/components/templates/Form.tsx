@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Container,
@@ -39,15 +39,16 @@ export const Form: React.FC = () => {
   };
   const navigate = useNavigate();
 
-  const goToResult = (formData: FormData) => {
+  const goToResult = useCallback((formData: FormData) => {
     navigate("/result", { state: formData });
-  };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  }, [navigate]);
+
+  const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (formData.name && formData.age && formData.gender && formData.comment) {
       goToResult(formData);
     }
-  };
+  }, [formData, goToResult]);
 
   const formItems = [
     {

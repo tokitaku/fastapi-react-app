@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useCallback } from "react";
 import { NavigateFunction } from "react-router-dom";
 
 export interface LoginParams {
@@ -11,7 +11,7 @@ export interface LoginParams {
 }
 
 export const useUserLogin = () => {
-  const login = async ({
+  const login = useCallback(async ({
     username,
     password,
     setLoginUser,
@@ -40,6 +40,6 @@ export const useUserLogin = () => {
       setIsLoggedIn(false);
       navigate("/login-failed");
     }
-  };
+  }, []);
   return { login };
 };

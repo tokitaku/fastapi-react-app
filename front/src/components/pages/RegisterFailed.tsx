@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -15,9 +15,13 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 export const RegisterFailed: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleRetry = () => {
+  const handleRetry = useCallback(() => {
     navigate("/register");
-  };
+  }, [navigate]);
+
+  const handleGoHome = useCallback(() => {
+    navigate("/");
+  }, [navigate]);
 
   return (
     <Container component="main" maxWidth="sm">
@@ -83,7 +87,7 @@ export const RegisterFailed: React.FC = () => {
           <Button
             variant="outlined"
             color="inherit"
-            onClick={() => navigate("/")}
+            onClick={handleGoHome}
             size="large"
           >
             ホームに戻る
