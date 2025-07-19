@@ -1,5 +1,6 @@
 from typing import Annotated
 from contextlib import asynccontextmanager
+import re
 
 from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Session
@@ -130,7 +131,9 @@ def create_word(word: schemas.WordCreate, session: SessionDep):
         return crud.create_word(session, word)
     except Exception as e:
         session.rollback()
-        raise HTTPException(status_code=500, detail=f"Failed to create word: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to create word: {str(e)}"
+        ) from e
 
 
 @app.get("/words/", response_model=list[schemas.Word])
@@ -139,17 +142,16 @@ def read_words(session: SessionDep, skip: int = 0, limit: int = 10):
         words = crud.get_words(session, skip, limit)
         return words
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to read words: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to read words: {str(e)}"
+        ) from e
 
 
 @app.get("/words/{word_text}", response_model=schemas.Word)
 def get_word_by_text(word_text: str, session: SessionDep):
     """
-    特定の単語を検索して取得
+    Get a specific word by its text
     """
-    # 英語バリデーション
-    import re
-
     if not re.match(r"^[A-Za-z]+$", word_text):
         raise HTTPException(
             status_code=400, detail="Word must contain only English letters"
@@ -163,4 +165,6 @@ def get_word_by_text(word_text: str, session: SessionDep):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get word: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get word: {str(e)}"
+        ) from e
