@@ -50,3 +50,24 @@ class Sales(SalesBase):
 
 class SalesCreate(SalesBase):
     pass
+
+
+class WordBase(BaseModel):
+    word: str
+
+    @field_validator("word")
+    def validate_english(cls, v: str):
+        if not re.fullmatch(r"[A-Za-z]+", v):
+            raise ValueError("word must contain only English letters")
+        return v
+
+
+class WordCreate(WordBase):
+    pass
+
+
+class Word(WordBase):
+    id: int
+
+    class Config:
+        from_attributes = True

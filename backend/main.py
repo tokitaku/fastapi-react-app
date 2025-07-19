@@ -1,5 +1,6 @@
 from typing import Annotated
 from contextlib import asynccontextmanager
+import re
 
 from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Session
@@ -118,3 +119,52 @@ def read_sales_by_year(year: int, session: SessionDep):
         raise HTTPException(
             status_code=500, detail=f"Failed to read sales by year: {str(e)}"
         )
+
+
+# Word routes
+@app.post("/words/", response_model=schemas.Word)
+def create_word(word: schemas.WordCreate, session: SessionDep):
+    db_word = crud.get_word_by_text(session, word.word)
+    if db_word:
+        raise HTTPException(status_code=400, detail="Word already exists")
+    try:
+        return crud.create_word(session, word)
+    except Exception as e:
+        session.rollback()
+        raise HTTPException(
+            status_code=500, detail=f"Failed to create word: {str(e)}"
+        ) from e
+
+
+@app.get("/words/", response_model=list[schemas.Word])
+def read_words(session: SessionDep, skip: int = 0, limit: int = 10):
+    try:
+        words = crud.get_words(session, skip, limit)
+        return words
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to read words: {str(e)}"
+        ) from e
+
+
+@app.get("/words/{word_text}", response_model=schemas.Word)
+def get_word_by_text(word_text: str, session: SessionDep):
+    """
+    Get a specific word by its text
+    """
+    if not re.match(r"^[A-Za-z]+$", word_text):
+        raise HTTPException(
+            status_code=400, detail="Word must contain only English letters"
+        )
+
+    try:
+        db_word = crud.get_word_by_text(session, word_text)
+        if db_word is None:
+            raise HTTPException(status_code=404, detail="Word not found")
+        return db_word
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get word: {str(e)}"
+        ) from e
