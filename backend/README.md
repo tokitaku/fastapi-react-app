@@ -1,50 +1,60 @@
 # Backend
 
-## Running the FastAPI server
+This directory contains the FastAPI server for the sales management sample application. The API uses **SQLModel** with a local SQLite database and exposes endpoints for users, sales records and simple word registration.
+
+## Requirements
+- Python 3.11
+- [Poetry](https://python-poetry.org/) for dependency management
+- (Optional) Docker/Docker Compose for containerised development
+
+## Setup and Development
 
 ### Using Poetry
-
 ```bash
 cd backend
-poetry install
+poetry install --no-root      # install dependencies
 poetry run fastapi dev main.py --host 127.0.0.1 --port 8000
 ```
+The server will start locally on <http://127.0.0.1:8000>. API docs are available at `/docs`.
 
 ### Using Docker Compose
-
-Ensure Docker and Docker Compose are installed, then from the project root run:
-
+Run from the project root:
 ```bash
-# Build and start the container
+# Build and run the backend container
 docker compose up --build
-
-# Or run in detached mode (background)
+# Or run in detached mode
 docker compose up -d --build
-
-# Stop the container
+# Stop containers
 docker compose down
 ```
+The backend is mapped to <http://localhost:8001> by default.
 
-The API will be available at `http://localhost:8001`.
+## Running Tests
+```bash
+cd backend
+poetry install --no-root
+poetry run pytest
+```
 
-#### Docker Setup Details
+## Project Structure
+- `main.py` – FastAPI application with all routes
+- `models.py` – SQLModel table definitions
+- `schemas.py` – Pydantic schemas for request/response validation
+- `crud.py` – Database access functions
+- `database.py` – SQLite configuration and session dependency
+- `tests/` – Pytest test suite
 
-- **Port**: The application runs on port 8001 (mapped from container port 8000)
-- **Auto-reload**: File changes are automatically detected and the server reloads using `fastapi dev`
-- **API Documentation**: Available at `http://localhost:8001/docs`
-- **Volume Mounting**: Local backend directory is mounted for development
-- **Command**: Uses `fastapi dev main.py --host 0.0.0.0 --port 8000` for development with hot reloading
+## Database
+A SQLite file `sales_info.db` is created at the project root when the server starts. Tables are automatically created on startup.
 
-#### Container vs Host Access
-
-- **Container logs show**: `Server started at http://0.0.0.0:8000` (internal container address)
-- **Actual access URL**: `http://localhost:8001` (mapped through Docker port forwarding)
-- **API Documentation**: `http://localhost:8001/docs`
-
-#### Troubleshooting
-
-If you encounter port conflicts:
-1. Check which process is using the port: `lsof -i :8001`
-2. Stop conflicting containers: `docker compose down`
-3. Or modify the port in `docker-compose.yml` if needed
+## Available Endpoints
+- `POST /users/` – create a user
+- `GET /users/` – list users
+- `GET /user` – retrieve a single user by name and password
+- `POST /sales/` – register sales data
+- `GET /sales/` – list or filter sales data
+- `GET /sales/{year}` – fetch sales for a year
+- `POST /words/` – register an English word
+- `GET /words/` – list words
+- `GET /words/{word_text}` – fetch a word by text
 
