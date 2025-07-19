@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
-export const RegisterSucceeded = () => {
+export const RegisterSucceeded: React.FC = () => {
   const location = useLocation();
   const { state } = location;
 

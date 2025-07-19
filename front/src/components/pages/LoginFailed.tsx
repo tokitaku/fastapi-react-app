@@ -1,5 +1,6 @@
+import React from "react";
 
-export const LoginFailed = () => {
+export const LoginFailed: React.FC = () => {
   return <div>LoginFailed</div>;
 };
 

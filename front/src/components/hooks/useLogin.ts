@@ -1,5 +1,14 @@
 import axios from "axios";
+import { Dispatch, SetStateAction } from "react";
+import { NavigateFunction } from "react-router-dom";
 
+export interface LoginParams {
+  username: string;
+  password: string;
+  setLoginUser: Dispatch<SetStateAction<string>>;
+  setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
+  navigate: NavigateFunction;
+}
 
 export const useUserLogin = () => {
   const login = async ({
@@ -8,7 +17,7 @@ export const useUserLogin = () => {
     setLoginUser,
     setIsLoggedIn,
     navigate,
-  }) => {
+  }: LoginParams): Promise<void> => {
     const endpoint = "http://localhost:8001/user";
     try {
       const response = await axios.get(endpoint, {

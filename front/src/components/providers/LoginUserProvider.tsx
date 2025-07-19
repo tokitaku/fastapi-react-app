@@ -1,12 +1,22 @@
 
-import { createContext, useState } from "react"
+import { createContext, useState, ReactNode, Dispatch, SetStateAction } from "react";
 
-export const LoginUserProviderContext = createContext({});
+export interface LoginUserProviderContextType {
+  loginUser: string;
+  setLoginUser: Dispatch<SetStateAction<string>>;
+  isLoggedIn: boolean;
+  setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
+}
 
-export const LoginUserProvider = (props) => {
-  const { children } = props;
-  const [loginUser, setLoginUser] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+export const LoginUserProviderContext = createContext<LoginUserProviderContextType | undefined>(undefined);
+
+interface LoginUserProviderProps {
+  children: ReactNode;
+}
+
+export const LoginUserProvider: React.FC<LoginUserProviderProps> = ({ children }) => {
+  const [loginUser, setLoginUser] = useState<string>("");
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   return (
     <LoginUserProviderContext.Provider value={{ loginUser, setLoginUser, isLoggedIn, setIsLoggedIn }}>

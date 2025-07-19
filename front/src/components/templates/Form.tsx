@@ -13,25 +13,36 @@ import {
   FormControlLabel,
   Radio,
   Button,
+  SelectChangeEvent,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 
-export const Form = () => {
-  const [formData, setFormData] = useState({
+export interface FormData {
+  name: string;
+  age: string;
+  gender: string;
+  comment: string;
+}
+
+export const Form: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     age: "",
     gender: "",
     comment: "",
   });
-  const handleInputChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>
+  ) => {
+    const { name, value } = event.target as HTMLInputElement;
+    setFormData({ ...formData, [name]: value });
   };
   const navigate = useNavigate();
 
-  const goToResult = (formData) => {
+  const goToResult = (formData: FormData) => {
     navigate("/result", { state: formData });
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (formData.name && formData.age && formData.gender && formData.comment) {
       goToResult(formData);

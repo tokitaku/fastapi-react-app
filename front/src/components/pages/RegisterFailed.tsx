@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
-export const RegisterFailed = () => {
+export const RegisterFailed: React.FC = () => {
   const navigate = useNavigate();
 
   const handleRetry = () => {

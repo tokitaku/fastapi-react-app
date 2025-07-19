@@ -1,7 +1,7 @@
-import { useState} from 'react'
+import { useState } from 'react'
 
-export const TestComponent = () => {
-    const [count, setCount] = useState(0)
+export const TestComponent: React.FC = () => {
+    const [count, setCount] = useState<number>(0)
     const onClickChange = () => {
         setCount((prevCount) => prevCount + 1)
     }

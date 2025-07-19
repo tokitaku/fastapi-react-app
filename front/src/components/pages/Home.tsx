@@ -7,20 +7,20 @@ import { BarChart } from "../elements/BarChart";
 import { SelectYear } from "../elements/SelectYear";
 import { ReadDatabase } from "../elements/ReadDatabase";
 
-export const Home = () => {
+export const Home: React.FC = () => {
   const { isLoggedIn } = useContext(LoginUserProviderContext);
-  const [year, setYear] = useState("");
-  const [data, setData] = useState([]);
+  const [year, setYear] = useState<string>("");
+  const [data, setData] = useState<(string | number)[][]>([]);
 
   const handleYearChange = useCallback(
-    (selectedYear) => {
+    (selectedYear: string) => {
       setYear(selectedYear);
       console.log(`選択された年度: ${selectedYear}`);
     },
     [setYear]
   );
 
-  const handleDataChange = useCallback((newData) => {
+  const handleDataChange = useCallback((newData: (string | number)[][]) => {
     setData(newData);
   }, []);
 

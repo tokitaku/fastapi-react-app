@@ -1,11 +1,18 @@
 import axios from "axios";
+import { NavigateFunction } from "react-router-dom";
+
+export interface RegisterParams {
+  name: string;
+  password: string;
+  navigate: NavigateFunction;
+}
 
 export const useRegister = () => {
   const register = async ({
     name,
     password,
     navigate,
-  }) => {
+  }: RegisterParams): Promise<void> => {
     const endpoint = "http://localhost:8001/users/";
     
     try {

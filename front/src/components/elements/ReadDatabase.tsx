@@ -1,6 +1,11 @@
 import { useEffect } from "react";
 import { useReadSales } from "../hooks/useReadSales";
 
+export interface ReadDatabaseProps {
+  year: string | number;
+  handleDataChange: (data: (string | number)[][]) => void;
+}
+
 // データを変換する関数
 const transformSalesData = (data) => {
   const departments = ["department", ...data.map(item => item.department)];
@@ -10,7 +15,7 @@ const transformSalesData = (data) => {
   return [departments, years, sales];
 };
 
-export const ReadDatabase = ({ year, handleDataChange }) => {
+export const ReadDatabase: React.FC<ReadDatabaseProps> = ({ year, handleDataChange }) => {
   const { onClickReadSales } = useReadSales();
   useEffect(() => {
     if (year) {

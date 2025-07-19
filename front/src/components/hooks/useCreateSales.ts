@@ -1,7 +1,11 @@
 import axios from "axios";
 
+export interface CreateSalesParams {
+  data: (string | number)[][];
+}
+
 export const useCreateSales = () => {
-  const onClickCreateSales = async (data) => {
+  const onClickCreateSales = async (data: CreateSalesParams["data"]): Promise<void> => {
     const endpoint = "http://localhost:8001/sales";
     try {
       // 1列目から最後の列まで処理（0列目はヘッダーなのでスキップ）

@@ -13,7 +13,7 @@ import { RegisterSucceeded } from "./components/pages/RegisterSucceeded";
 import { RegisterFailed } from "./components/pages/RegisterFailed";
 import { NotFound } from "./components/pages/NotFound";
 
-function App() {
+function App(): JSX.Element {
   return (
     <LoginUserProvider>
       <div className="App">
